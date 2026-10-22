@@ -328,10 +328,24 @@
 
       <div class="success" data-success hidden tabindex="-1">
         <img src="/assets/img/ginkgo-dorado.png" alt="" width="96" height="61">
-        <h3>Solicitud recibida</h3>
-        <p>Gracias, <span data-success-name></span>. Hemos recibido tu idea y la revisaremos con calma. El estudio se pondrá en contacto contigo para confirmar el diseño, la fecha y la hora.</p>
-        <p class="success__small">Tu cita no está confirmada hasta que hables con nosotros.</p>
-        <button type="button" class="btn btn--ghost" data-new-request>ENVIAR OTRA SOLICITUD</button>
+        <div data-saved-copy>
+          <h3>Solicitud recibida</h3>
+          <p>Gracias, <span data-success-name></span>. Hemos recibido tu idea y la revisaremos con calma. El estudio se pondrá en contacto contigo para confirmar el diseño, la fecha y la hora.</p>
+          <p class="success__small">Si quieres, también puedes mandárnosla por WhatsApp para que la veamos antes.</p>
+        </div>
+        <div data-wa-copy hidden>
+          <h3>Último paso: envíala por WhatsApp</h3>
+          <p>Gracias, <span data-success-name></span>. Pulsa el botón para abrir WhatsApp con tu solicitud ya escrita y dale a enviar. Si tienes fotos de referencia, adjúntalas en el mismo chat.</p>
+          <p class="success__small">Tu solicitud no nos llega hasta que la envíes por WhatsApp.</p>
+        </div>
+        <p class="success__small">Tu cita no está confirmada hasta que el estudio hable contigo.</p>
+        <div class="success__actions">
+          <a class="btn btn--gold" href="#" target="_blank" rel="noopener" data-success-wa hidden>
+            <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+            <span data-success-wa-label>ENVIAR POR WHATSAPP</span>
+          </a>
+          <button type="button" class="btn btn--ghost" data-new-request>ENVIAR OTRA SOLICITUD</button>
+        </div>
       </div>
     </section>
 

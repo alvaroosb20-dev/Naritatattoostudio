@@ -1,5 +1,42 @@
 import { OPTIONS, FILE_RULES, dateLimits, validateBooking } from './booking-rules.js';
 import { links } from './main.js';
+import { SITE } from './config.js';
+
+const WA_NUMBER = String(SITE.whatsapp || '').replace(/\D/g, '');
+
+function fmtDate(iso) {
+  const d = new Date(`${iso}T12:00:00`);
+  return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+/** Mensaje de WhatsApp con todos los datos de la solicitud, listo para enviar al estudio. */
+function whatsappMessage(raw, photoCount, saved) {
+  const desc = raw.descripcion.trim();
+  const lines = [
+    '*Solicitud de cita · Narita Tattoo Studio*',
+    '',
+    `*Nombre:* ${raw.nombre.trim()}`,
+    `*Teléfono:* ${raw.telefono.trim()}`,
+    `*Correo:* ${raw.email.trim()}`,
+    '',
+    `*Tipo:* ${raw.tipo}`,
+    `*Estilo:* ${raw.estilo}`,
+    `*Zona del cuerpo:* ${raw.zona.trim()}`,
+    `*Tamaño:* ${raw.tamano}`,
+    `*Presupuesto:* ${raw.presupuesto}`,
+    `*Fecha preferida:* ${fmtDate(raw.fecha)}`,
+    `*Horario preferido:* ${raw.horario}`,
+    '',
+    '*Mi idea:*',
+    desc.length > 900 ? `${desc.slice(0, 900)}…` : desc,
+  ];
+  if (photoCount) {
+    lines.push('', saved
+      ? `*Fotos de referencia:* ${photoCount}, enviadas desde la web.`
+      : `*Fotos de referencia:* ${photoCount}, te las adjunto en este chat.`);
+  }
+  return lines.join('\n');
+}
 
 const form = document.querySelector('[data-booking-form]');
 if (form) init(form);
@@ -179,6 +216,32 @@ function init(form) {
     submitLabel.textContent = label || 'SOLICITAR MI CITA';
   };
 
+  /**
+   * saved = true  → la solicitud está guardada; WhatsApp es un atajo opcional.
+   * saved = false → el envío se completa por WhatsApp (único paso que falta).
+   */
+  const showSuccess = (raw, saved) => {
+    const name = raw.nombre.trim().split(/\s+/)[0];
+    const waBtn = success.querySelector('[data-success-wa]');
+    success.dataset.mode = saved ? 'saved' : 'whatsapp';
+    success.querySelectorAll('[data-success-name]').forEach((n) => (n.textContent = name));
+    success.querySelector('[data-saved-copy]').hidden = !saved;
+    success.querySelector('[data-wa-copy]').hidden = saved;
+    if (WA_NUMBER) {
+      waBtn.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(whatsappMessage(raw, photos.length, saved))}`;
+      waBtn.hidden = false;
+      waBtn.querySelector('[data-success-wa-label]').textContent = saved ? 'ENVIAR TAMBIÉN POR WHATSAPP' : 'ENVIAR POR WHATSAPP';
+      waBtn.classList.toggle('btn--gold', !saved);
+      waBtn.classList.toggle('btn--wa', saved);
+    } else {
+      waBtn.hidden = true;
+    }
+    form.hidden = true;
+    success.hidden = false;
+    success.focus();
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (busy) return;
@@ -215,15 +278,7 @@ function init(form) {
       const res = await fetch('/api/reservas', { method: 'POST', body, headers: { Accept: 'application/json' } });
       const json = await res.json().catch(() => ({}));
 
-      if (res.ok && json.ok) {
-        const name = raw.nombre.trim().split(/\s+/)[0];
-        success.querySelector('[data-success-name]').textContent = name;
-        form.hidden = true;
-        success.hidden = false;
-        success.focus();
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
+      if (res.ok && json.ok) return showSuccess(raw, true);
 
       if (res.status === 400 && json.errors) {
         showErrors(json.errors);
@@ -234,12 +289,15 @@ function init(form) {
         showAlert('No se ha enviado: las fotos ocupan demasiado.');
       } else if (res.status === 429) {
         showAlert('Has enviado varias solicitudes seguidas. Espera unos minutos e inténtalo de nuevo.');
-      } else if (json.error === 'not_configured') {
-        showAlert(`El sistema de reservas online todavía no está activo, así que tu solicitud no se ha enviado.${fallbackContact()}`);
+      } else if (WA_NUMBER) {
+        // La web no ha podido guardarla (servidor sin configurar o caído):
+        // la solicitud se envía por WhatsApp para no perderla.
+        return showSuccess(raw, false);
       } else {
         showAlert(`No se ha podido enviar tu solicitud. Inténtalo de nuevo en unos minutos.${fallbackContact()}`);
       }
     } catch {
+      if (WA_NUMBER) return showSuccess(raw, false);
       showAlert(`No hay conexión con el servidor. Comprueba tu conexión a internet e inténtalo de nuevo.${fallbackContact()}`);
     } finally {
       setBusy(false);

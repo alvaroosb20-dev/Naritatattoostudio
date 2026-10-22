@@ -68,6 +68,12 @@ Cuando esté todo, pon `showPendingNotes: false` en `config.js`.
 6. Ficha de Google Business Profile del estudio: es lo que más ayuda al SEO local (y lo que debes poner en `mapsQuery`).
 
 ## Cómo funciona la reserva
+
+**WhatsApp:** al enviar el formulario aparece un botón que abre WhatsApp con todos los datos ya escritos para el número del estudio (`whatsapp` en `config.js`).
+- Sin Supabase configurado (o si el servidor falla), WhatsApp es el canal de envío: la pantalla le dice al cliente que el último paso es enviar el mensaje y adjuntar ahí sus fotos.
+- Con Supabase, la solicitud ya queda guardada y WhatsApp es un atajo opcional («Enviar también por WhatsApp»).
+- WhatsApp no permite adjuntar fotos automáticamente desde un enlace: el cliente las añade en el chat.
+
 1. El navegador valida los campos y reduce las fotos (máx. 5, a ~1800 px) antes de enviarlas.
 2. `/api/reservas` vuelve a validar todo, comprueba que los archivos son imágenes reales, sube las fotos al bucket privado y guarda la solicitud con estado **pendiente**.
 3. Nunca se muestran horas «disponibles»: la fecha y el horario son preferencias. El estudio confirma la cita al hablar con el cliente y cambia el estado en `/admin`.

@@ -495,9 +495,11 @@ html.hide-pending .pending { display: none !important; }
 }
 .success:focus { outline: none; }
 .success img { margin: 0 auto 1.4rem; }
-.success h3 { font-family: var(--serif); font-weight: 400; font-size: var(--step-3); margin: 0 0 1rem; }
+.success h3 { font-family: var(--serif); font-weight: 400; font-size: var(--step-3); line-height: 1.1; margin: 0 0 1rem; }
 .success p { color: var(--paper-dim); max-width: 46ch; margin: 0 auto 1rem; }
-.success .success__small { font-size: var(--step--1); color: var(--muted); margin-bottom: 2rem; }
+.success .success__small { font-size: var(--step--1); color: var(--muted); margin-bottom: 1rem; }
+.success__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin-top: 1.6rem; }
+@media (max-width: 480px) { .success__actions .btn { width: 100%; } }
 
 @media (max-width: 960px) {
   .booking { grid-template-columns: 1fr; }
