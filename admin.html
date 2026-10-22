@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Solicitudes · Narita Tattoo Studio</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+  <script type="module" src="/assets/js/admin.js"></script>
+</head>
+<body class="admin">
+  <header class="admin__bar">
+    <a class="brand" href="/">
+      <img class="brand__mark" src="/assets/img/ginkgo-dorado.png" alt="" width="44" height="28">
+      <span class="brand__name">Narita <span>Solicitudes</span></span>
+    </a>
+    <button type="button" class="btn btn--ghost admin__logout" data-logout hidden>CERRAR SESIÓN</button>
+  </header>
+
+  <main class="admin__main">
+    <!-- Acceso -->
+    <form class="admin__login" data-login hidden>
+      <h1>Panel del estudio</h1>
+      <p>Introduce la contraseña para ver las solicitudes de cita.</p>
+      <div class="field">
+        <label for="a-pass">Contraseña</label>
+        <input id="a-pass" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <p class="admin__error" data-login-error role="alert"></p>
+      <button class="btn btn--gold btn--block" type="submit">ENTRAR</button>
+    </form>
+
+    <!-- Listado -->
+    <section data-panel hidden>
+      <div class="admin__head">
+        <h1>Solicitudes de cita</h1>
+        <div class="filters" role="group" aria-label="Filtrar por estado" data-states>
+          <button type="button" class="filter is-active" data-state="" aria-pressed="true">Todas</button>
+          <button type="button" class="filter" data-state="pendiente" aria-pressed="false">Pendientes</button>
+          <button type="button" class="filter" data-state="contactado" aria-pressed="false">Contactadas</button>
+          <button type="button" class="filter" data-state="confirmada" aria-pressed="false">Confirmadas</button>
+          <button type="button" class="filter" data-state="descartada" aria-pressed="false">Descartadas</button>
+        </div>
+      </div>
+      <p class="admin__msg" data-msg role="status"></p>
+      <div class="admin__list" data-list></div>
+    </section>
+  </main>
+
+  <template id="card-tpl">
+    <article class="req">
+      <header class="req__head">
+        <div>
+          <h2 class="req__name" data-f="nombre"></h2>
+          <p class="req__date" data-f="created"></p>
+        </div>
+        <label class="req__state">
+          <span class="sr-only">Estado</span>
+          <select data-estado>
+            <option value="pendiente">Pendiente</option>
+            <option value="contactado">Contactado</option>
+            <option value="confirmada">Confirmada</option>
+            <option value="descartada">Descartada</option>
+          </select>
+        </label>
+      </header>
+      <div class="req__contact" data-contact></div>
+      <dl class="req__grid">
+        <div><dt>Tipo</dt><dd data-f="tipo"></dd></div>
+        <div><dt>Estilo</dt><dd data-f="estilo"></dd></div>
+        <div><dt>Zona</dt><dd data-f="zona"></dd></div>
+        <div><dt>Tamaño</dt><dd data-f="tamano"></dd></div>
+        <div><dt>Presupuesto</dt><dd data-f="presupuesto"></dd></div>
+        <div><dt>Prefiere</dt><dd data-f="cuando"></dd></div>
+      </dl>
+      <p class="req__desc" data-f="descripcion"></p>
+      <ul class="req__photos" data-photos></ul>
+      <div class="field">
+        <label>Notas internas</label>
+        <textarea rows="2" data-notas placeholder="Solo las ve el estudio"></textarea>
+      </div>
+      <div class="req__foot">
+        <button type="button" class="btn btn--ghost" data-save-notes>GUARDAR NOTAS</button>
+        <button type="button" class="req__delete" data-delete>Borrar solicitud y fotos</button>
+      </div>
+    </article>
+  </template>
+</body>
+</html>

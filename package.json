@@ -1,0 +1,13 @@
+{
+  "name": "narita-tattoo-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web de Narita Tattoo Studio: portafolio, solicitudes de cita y panel de gestión.",
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
