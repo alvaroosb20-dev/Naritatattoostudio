@@ -112,7 +112,9 @@ function renderContact() {
   $$('[data-social]').forEach((list, i) => {
     if (nets.length) {
       nets.forEach(([key, label]) => {
-        list.append(el('li', {}, el('a', { href: SITE.social[key], target: '_blank', rel: 'noopener me' }, [icon(key), label])));
+        const handle = key === 'facebook' ? '' : (SITE.social[key].match(/\/(@?[\w.]+)\/?$/) || [])[1] || '';
+        const text = handle ? `@${handle.replace(/^@/, '')}` : label;
+        list.append(el('li', {}, el('a', { href: SITE.social[key], target: '_blank', rel: 'noopener me', 'aria-label': `${label} ${text}` }, [icon(key), text])));
       });
     } else if (i === 0) {
       list.append(el('li', {}, pending('Añadir los enlaces de Instagram, TikTok o Facebook')));

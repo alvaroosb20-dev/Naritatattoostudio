@@ -8,9 +8,9 @@ export const SITE = {
   name: 'Narita Tattoo Studio',
 
   // Teléfono con prefijo de país, solo números. Ej.: '34612345678'
-  phone: '',
+  phone: '34688912813',
   // Número de WhatsApp con prefijo, solo números. Si es el mismo, cópialo aquí.
-  whatsapp: '',
+  whatsapp: '34688912813',
   // Mensaje que aparece escrito al abrir WhatsApp
   whatsappMessage: 'Hola, Narita Tattoo. Me gustaría pedir información para hacerme un tatuaje.',
 
@@ -19,15 +19,15 @@ export const SITE = {
 
   // Dirección real del estudio
   address: {
-    street: '', //      Ej.: 'Calle Ejemplo, 12, local 3'
-    postalCode: '', //  Ej.: '38001'
-    city: '', //        Ej.: 'Santa Cruz de Tenerife'
-    region: '', //      Ej.: 'Santa Cruz de Tenerife'
+    street: 'Calle Heraclio Sánchez, 23, Edificio Galaxia, entrada 5, planta -1, local 21D',
+    postalCode: '38204',
+    city: 'La Laguna',
+    region: 'Santa Cruz de Tenerife',
     country: 'España',
   },
   // Texto que se busca en Google Maps. Si lo dejas vacío se usa la dirección.
   // Lo más fiable es poner el nombre tal y como aparece en Google Maps.
-  mapsQuery: '',
+  mapsQuery: 'Narita tattoo Studio, Calle Heraclio Sánchez 23, 38204 La Laguna, Santa Cruz de Tenerife',
 
   // Horario de apertura. Ej.:
   // hours: [
@@ -39,7 +39,7 @@ export const SITE = {
 
   // Redes sociales: pega la URL completa del perfil
   social: {
-    instagram: '', // Ej.: 'https://www.instagram.com/usuario'
+    instagram: 'https://www.instagram.com/naritatattoostudio/',
     tiktok: '', //    Ej.: 'https://www.tiktok.com/@usuario'
     facebook: '', //  Ej.: 'https://www.facebook.com/pagina'
   },
